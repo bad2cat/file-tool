@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"fd/connectErr"
 	"fmt"
 	"github.com/pkg/sftp"
 	"golang.org/x/crypto/ssh"
@@ -8,7 +9,6 @@ import (
 )
 
 func ConnectSftp(user, passsword, host string, port int) (*sftp.Client, error) {
-
 	var (
 		auth         []ssh.AuthMethod
 		clientConfig *ssh.ClientConfig
@@ -27,11 +27,11 @@ func ConnectSftp(user, passsword, host string, port int) (*sftp.Client, error) {
 	}
 	sshClient, err := ssh.Dial("tcp", addr, clientConfig)
 	if err != nil {
-		return nil, err
+		return nil, connectErr.GetConnectSSHErr(err)
 	}
-	sftpClient,err = sftp.NewClient(sshClient)
-	if err != nil{
-		return nil,err
+	sftpClient, err = sftp.NewClient(sshClient)
+	if err != nil {
+		return nil, connectErr.GetConnectSSHErr(err)
 	}
-	return sftpClient,nil
+	return sftpClient, nil
 }

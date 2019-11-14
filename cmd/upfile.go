@@ -17,6 +17,7 @@ package cmd
 
 import (
 	"fd/cmd/Impl"
+	"flag"
 	"fmt"
 	"github.com/spf13/cobra"
 	"os"
@@ -26,15 +27,15 @@ import (
 var upfileCmd = &cobra.Command{
 	Use:   "upfile",
 	Short: "upload file",
-	Long: `upfile is tool for upload local file to remote`,
+	Long:  `upfile is tool for upload local file to remote`,
 	Run: func(cmd *cobra.Command, args []string) {
-		err := Impl.UpFileFromServer(user,password,host,port,loc,remote)
+		err := Impl.UpFileFromServer(user, password, host, port, loc, remote)
 		out := os.Stdout
-		if err != nil{
-			fmt.Fprint(out,err)
+		if err != nil {
+			fmt.Fprint(out, err)
 			os.Exit(1)
 		}
-		fmt.Fprint(out,"upload file success")
+		fmt.Fprint(out, "upload file success")
 	},
 }
 
@@ -56,4 +57,6 @@ func init() {
 	upfileCmd.Flags().StringVarP(&remote, "remote", "R", "/home/"+user, "the remote path")
 	upfileCmd.Flags().StringVarP(&loc, "loc", "L", "/home/"+user, "the local file")
 	upfileCmd.Flags().IntVarP(&port, "port", "O", 80, "The port of remote host")
+
+	flag.Parse()
 }
